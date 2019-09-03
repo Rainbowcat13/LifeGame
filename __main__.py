@@ -40,7 +40,7 @@ class Field:
             print()
 
     def fill(self):
-        if self.field_file == 'no':
+        if not self.field_file:
             for _1 in range(self.size[0]):
                 for _2 in range(self.size[1]):
                     self.field[_1][_2] = random.choice(items)
@@ -113,7 +113,8 @@ parser.add_argument('field_file', help='path to file '
                                        'with your own start field.'
                                        'Write "no" for no field file'
                                        ' About format of this file '
-                                       'you can read in description', type=str)
+                                       'you can read in readme', type=str,
+                    default='')
 params = parser.parse_args()
 f = Field(update_time=params.update_time,
           width=params.width,
