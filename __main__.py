@@ -47,7 +47,9 @@ class Field:
         else:
             try:
                 self.field = [list(x) for x in
-                              open(self.field_file.read(), 'r').split('\n')]
+                              open(self.field_file, 'r').read().split('\n')]
+                if not self.field[-1]:
+                    self.field = self.field[:-1]
             except FileExistsError:
                 print('There is no field file!')
                 exit(1)
