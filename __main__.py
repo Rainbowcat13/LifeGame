@@ -2,6 +2,7 @@ import os
 import random
 import argparse
 import time
+import sys
 
 items = ['$', '&', '.', '#']
 random.seed(time.time())
@@ -9,8 +10,8 @@ random.seed(time.time())
 
 class Field:
 
-    def __init__(self, windows=False, update_time=0.5,
-                 width=50, height=50, field_file=''):
+    def __init__(self, update_time=0.5,
+                 width=50, height=50, field_file='no'):
         if height > 50:
             print('Warning! Field can be too large for your screen!')
         if height < 1 or width < 1:
@@ -22,7 +23,7 @@ class Field:
         self.size = (height, width)
         self.field = [['.' for _1 in range(self.size[0])]
                       for _2 in range(self.size[1])]
-        self.w = windows
+        self.w = sys.platform.startswith('win')
         self.update_time = update_time
         self.field_file = field_file
 
@@ -39,7 +40,7 @@ class Field:
             print()
 
     def fill(self):
-        if not self.field_file:
+        if self.field_file == 'no':
             for _1 in range(self.size[0]):
                 for _2 in range(self.size[1]):
                     self.field[_1][_2] = random.choice(items)
@@ -98,8 +99,24 @@ class Field:
             self.clear_screen()
             self.render()
             self.change()
-            time.sleep(1)
+            time.sleep(self.update_time)
 
 
-f = Field(windows=False)
+parser = argparse.ArgumentParser()
+parser.add_argument('update_time',
+                    help='float number which shows'
+                         ' frequency of screen updating',
+                    type=float)
+parser.add_argument('width', help='width of the field in cells', type=int)
+parser.add_argument('height', help='height of the field in cells', type=int)
+parser.add_argument('field_file', help='path to file '
+                                       'with your own start field.'
+                                       'Write "no" for no field file'
+                                       ' About format of this file '
+                                       'you can read in description', type=str)
+params = parser.parse_args()
+f = Field(update_time=params.update_time,
+          width=params.width,
+          height=params.height,
+          field_file=params.field_file)
 f.run()
