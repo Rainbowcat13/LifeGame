@@ -14,4 +14,4 @@ by writing path to field file in last parameter.
 Field file format must be like in file default_field.
 About other command line arguments you can learn by command 
 
-$ python3 __main__.py --help
+$ python3 \_\_main\_\_.py --help
